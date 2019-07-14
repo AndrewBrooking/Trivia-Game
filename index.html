@@ -20,43 +20,37 @@
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 
-<body>
+<body class="fade-in">
 
     <div class="jumbotron text-center">
+        <!-- Page title -->
         <div class="row">
-            <span class="col mx-auto display-1" id="title">Trivia</span>
+            <span class="col-11 mx-auto display-1 border-bottom" id="title">Trivia</span>
         </div>
 
+        <!-- Question -->
         <div class="row">
-            <span class="col mx-auto display-4" id="question">Question</span>
+            <span class="col mx-auto mt-3 h1" id="question">Question</span>
         </div>
     </div>
 
     <div class="container mx-auto text-center">
         <!-- Timer -->
-        <div class="row">
-            <span class="col mx-auto" id="timer">Timer</span>
-        </div>
+        <div class="row w-75 mx-auto" id="timer"></div>
+    </div>
 
+    <div class="container mx-auto text-center">
         <!-- Answer A -->
-        <div class="row w-50 mx-auto my-5 text-center">
-            <button class="col btn btn-light w-100 mx-auto" id="choice-1">A</button>
-        </div>
+        <div class="row w-50 mx-auto my-1 text-center" id="choice-1"></div>
 
         <!-- Answer B -->
-        <div class="row w-50 mx-auto my-5 text-center">
-            <button class="col btn btn-light w-100 mx-auto" id="choice-2">B</button>
-        </div>
+        <div class="row w-50 mx-auto my-1 text-center" id="choice-2"></div>
 
         <!-- Answer C -->
-        <div class="row w-50 mx-auto my-5 text-center">
-            <button class="col btn btn-light w-100 mx-auto" id="choice-3">C</button>
-        </div>
+        <div class="row w-50 mx-auto my-1 text-center" id="choice-3"></div>
 
         <!-- Answer D -->
-        <div class="row w-50 mx-auto my-5 text-center">
-            <button class="col btn btn-light w-100 mx-auto" id="choice-4">D</button>
-        </div>
+        <div class="row w-50 mx-auto my-1 text-center" id="choice-4"></div>
     </div>
 
     <!-- jQuery -->
@@ -75,6 +69,7 @@
     </script>
 
     <!-- App -->
+    <script src="./assets/javascript/queries.js"></script>
     <script src="./assets/javascript/app.js"></script>
 </body>
 
