@@ -1,6 +1,6 @@
 const queries = [
     {
-        question: "What is the feature used by the Greeks to support parts of a large slab without the use of a wall?",
+        question: "What is the feature used to support parts of a large slab without the use of a wall?",
         answer: "Column",
         alternates: [
             "Architrave",

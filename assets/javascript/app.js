@@ -2,6 +2,12 @@ $(document).ready(function() {
     let questionID = 0;
     let correct = 0;
 
+    displayQuestion();
+
+    function displayQuestion() {
+        $("#question").text(queries[questionID].question);
+    }
+
     function newButton(value) {
         let btn = $("<button>");
         btn.attr("class", "col btn btn-light w-100 mx-auto py-2");
