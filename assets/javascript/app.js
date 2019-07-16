@@ -1,9 +1,15 @@
 $(document).ready(function () {
     let questionID = 0;
-    let correct = 0;
+    let time = 30;
+    let score = 0;
+    let timerID;
 
     displayQuestion();
 
+    // Handle button clicks
+    $(".choice").on("click", ".btn", nextQuestion);
+
+    // Displays the current question and possible answers
     function displayQuestion() {
         $("#question").fadeOut(1000, function () {
             $(this).text(queries[questionID].question);
@@ -11,8 +17,10 @@ $(document).ready(function () {
         });
 
         setTimeout(randomizeChoices, 1000);
+        setTimeout(resetTimer, 1000);
     }
 
+    // Shuffles the question choices and adds a button for 
     function randomizeChoices() {
         let choices = queries[questionID].alternates.slice(0, 4);
         choices.push(queries[questionID].answer);
@@ -25,11 +33,12 @@ $(document).ready(function () {
             } else {
                 let btn = newButton(choices[counter]);
                 counter++;
-                $("#choice-" + counter).html(btn);
+                $("#choice-" + counter).fadeIn().html(btn);
             }
-        }, 750);
+        }, 500);
     }
 
+    // Creates a new button with a specified value
     function newButton(value) {
         let btn = $("<button>");
         btn.attr("class", "col btn btn-light w-100 mx-auto py-2 slide-up");
@@ -38,10 +47,49 @@ $(document).ready(function () {
         return btn;
     }
 
+    // Checks if correct answer was selected then displays the next question
+    function nextQuestion() {
+        stopTimer();
+
+        if ($(this).attr("value") === queries[questionID].answer) {
+            score++;
+        }
+
+        $(".choice").fadeOut(500);
+        setTimeout(function() {
+            $(".choice").empty();
+        }, 500);
+
+        questionID++;
+        displayQuestion();
+    }
+
+    // Sets timer back to 30 seconds
+    function resetTimer() {
+        stopTimer();
+        time = 30;
+        timerID = setInterval(updateTimer, 1000);
+    }
+
+    // Stop interval for the timer
+    function stopTimer() {
+        clearInterval(timerID);
+    }
+
+    function updateTimer() {
+        time--;
+        $("#timer").text(time);
+        // TODO: Animate timer bar decreasing
+
+        if (time <= 0) {
+            stopTimer();
+        }
+    }
+
     // Implementation of the Fisher-Yates shuffling algorithim
     function shuffle(array) {
-        var currentIndex = array.length,
-            temporaryValue, randomIndex;
+        let currentIndex = array.length;
+        let temporaryValue, randomIndex;
 
         // While there remain elements to shuffle...
         while (0 !== currentIndex) {
