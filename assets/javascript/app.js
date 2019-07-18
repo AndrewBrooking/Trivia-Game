@@ -1,7 +1,10 @@
 $(document).ready(function () {
+    const initialOffset = 440;
+    const maxTime = 30;
     let questionID = 0;
     let time = 30;
     let score = 0;
+    let currentMessage = "";
     let timerID;
 
     displayQuestion();
@@ -17,7 +20,7 @@ $(document).ready(function () {
         });
 
         setTimeout(randomizeChoices, 1000);
-        setTimeout(resetTimer, 1000);
+        setTimeout(resetTimer, 1250);
     }
 
     // Shuffles the question choices and adds a button for 
@@ -49,25 +52,41 @@ $(document).ready(function () {
 
     // Checks if correct answer was selected then displays the next question
     function nextQuestion() {
-        stopTimer();
-
         if ($(this).attr("value") === queries[questionID].answer) {
             score++;
+            currentMessage = "Correct!";
+        } else {
+            currentMessage = "Incorrect!";
         }
 
         $(".choice").fadeOut(500);
-        setTimeout(function() {
-            $(".choice").empty();
-        }, 500);
+        setTimeout(displayMessage, 500);
+        setTimeout(emptyChoices, 500);
 
         questionID++;
-        displayQuestion();
+
+        setTimeout(displayQuestion, 5000);
+    }
+
+    function writeTime() {
+        $("#timer").text(time);
     }
 
     // Sets timer back to 30 seconds
     function resetTimer() {
         stopTimer();
         time = 30;
+        writeTime();
+        $('.circle_animation').css('stroke-dashoffset', initialOffset - (time * (initialOffset / maxTime)));
+        timerID = setInterval(updateTimer, 1000);
+    }
+
+    // Sets timer to 5 seconds
+    function shortResetTimer() {
+        stopTimer();
+        time = 5;
+        writeTime();
+        $('.circle_animation').css('stroke-dashoffset', initialOffset - (time * (initialOffset / maxTime)));
         timerID = setInterval(updateTimer, 1000);
     }
 
@@ -77,13 +96,30 @@ $(document).ready(function () {
     }
 
     function updateTimer() {
-        time--;
-        $("#timer").text(time);
-        // TODO: Animate timer bar decreasing
+        writeTime();
+
+        // Animate timer bar decreasing
+        $('.circle_animation').css('stroke-dashoffset', initialOffset - (time * (initialOffset / maxTime)));
 
         if (time <= 0) {
             stopTimer();
         }
+
+        time--;
+    }
+
+    function emptyChoices() {
+        $(".choice").empty();
+    }
+
+    function displayMessage() {
+        $("#score-message").text(currentMessage).fadeIn(500);
+        shortResetTimer();
+
+        setTimeout(function() {
+            $("#score-message").fadeOut(500);
+            $("#score-message").empty();
+        }, 5000);
     }
 
     // Implementation of the Fisher-Yates shuffling algorithim

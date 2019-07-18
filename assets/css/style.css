@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville&display=swap');
 
 body {
+    width: 98%;
     font-family: 'Libre Baskerville', serif;
     background: url("../images/column-section.png");
     background-size: 5%;
@@ -10,6 +11,36 @@ body {
     height: 10px;
     background: url("../images/border-section.png");
     background-repeat: repeat-x;
+}
+
+#timer-container {
+    position: relative;
+    height: 160px;
+}
+
+svg {
+    transform: rotate(-90deg);
+}
+
+#circle, #timer {
+    position: absolute;
+    margin: auto;
+    /* align-content: center;
+    justify-items: center; */
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+#timer {
+    line-height: 10rem;
+}
+
+.circle_animation {
+  stroke-dasharray: 440; /* circumference of the circle */
+  stroke-dashoffset: 440;
+  transition: all 1s linear;
 }
 
 .fade-in {

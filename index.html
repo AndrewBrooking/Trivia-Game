@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 
-<body class="w-100 h-100">
+<body class="h-100 mx-auto">
     <div class="jumbotron bg-white text-center px-0 pb-0">
         <!-- Page title -->
         <div class="row fade-in">
@@ -35,23 +35,31 @@
         <div class="w-100 fancy-border"></div>
     </div>
 
-    <div class="container mx-auto my-2 text-center">
+    <div class="container w-25 mx-auto mt-2 mb-4 text-center fade-in" id="timer-container">
         <!-- Timer -->
-        <div class="row w-50 mx-auto text-center"><span class="col mx-0 px-0 h3" id="timer">30</span></div>
+        <svg width="160" height="160" xmlns="http://www.w3.org/2000/svg" id="circle">
+            <circle class="circle_animation" r="69.85699" cy="81" cx="81" stroke-width="4" stroke="black" fill="none"/>
+        </svg>
+        <span class="h3" id="timer">30</span>
     </div>
 
-    <div class="container mx-auto text-center">
+    <div class="container w-50 mx-auto text-center">
+        <!-- Correct/Incorrect Message -->
+        <div class="row mx-auto my-1 text-center h3">
+            <span class="col mx-auto mt-3 h3" id="score-message"></span>
+        </div>
+
         <!-- Answer A -->
-        <div class="row w-50 mx-auto my-1 text-center choice" id="choice-1"></div>
+        <div class="row mx-auto my-1 text-center choice" id="choice-1"></div>
 
         <!-- Answer B -->
-        <div class="row w-50 mx-auto my-1 text-center choice" id="choice-2"></div>
+        <div class="row mx-auto my-1 text-center choice" id="choice-2"></div>
 
         <!-- Answer C -->
-        <div class="row w-50 mx-auto my-1 text-center choice" id="choice-3"></div>
+        <div class="row mx-auto my-1 text-center choice" id="choice-3"></div>
 
         <!-- Answer D -->
-        <div class="row w-50 mx-auto my-1 text-center choice" id="choice-4"></div>
+        <div class="row mx-auto my-1 text-center choice" id="choice-4"></div>
     </div>
 
     <!-- jQuery -->
