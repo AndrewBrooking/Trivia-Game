@@ -1,12 +1,15 @@
 $(document).ready(function () {
+    // Constants
     const initialOffset = 440;
     const maxTime = 30;
+
+    // Variables
     let questionID = 0;
     let time = 30;
     let score = 0;
     let currentMessage = "";
     let shortTimer = false;
-    let timerID;
+    let timerID = 0;
 
     // Initial display of question
     displayQuestion();
@@ -16,12 +19,26 @@ $(document).ready(function () {
         nextQuestion($(this).attr("value"));
     });
 
+    function fadeOutElement(element, duration) {
+        $(element).fadeOut(duration);
+    }
+
+    function fadeInElement(element, duration) {
+        $(element).fadeIn(duration);
+    }
+
     // Displays the current question and possible answers
     function displayQuestion() {
-        $("#question").fadeOut(1000, function () {
-            $(this).text(queries[questionID].question);
-            $(this).fadeIn(1000);
-        });
+        let qText = "#question";
+        fadeOutElement(qText, 1000);
+        
+        setTimeout(function() {
+            $(qText).text(queries[questionID].question);
+        }, 1000);
+
+        setTimeout(function() {
+            fadeInElement(qText, 1000);
+        }, 1000);
 
         setTimeout(randomizeChoices, 1000);
         setTimeout(resetTimer, 1250);
@@ -65,21 +82,22 @@ $(document).ready(function () {
             currentMessage = "Incorrect!";
         }
 
-        $(".choice").fadeOut(500);
+        fadeOutElement(".choice", 500);
         setTimeout(displayMessage, 500);
         setTimeout(emptyChoices, 500);
-
         setTimeout(function() {
-            $("#message").fadeOut(500);
-            $("#message").text("");
+            fadeOutElement("#message", 1000);
         }, 5000);
 
         questionID++;
 
         if (questionID >= queries.length) {
             stopTimer();
-            $("#timer-container").css({ opacity: 0 });
-            displayMessage(score + "/" + queries.length);
+            fadeOutElement("#timer-container", 1000);
+            setTimeout(function() {
+                currentMessage = score + "/" + queries.length;
+                displayMessage();
+            }, 5000);
         } else {
             setTimeout(displayQuestion, 5000);
         }
@@ -134,7 +152,8 @@ $(document).ready(function () {
 
     // Shows correct/incorrect message
     function displayMessage() {
-        $("#message").text(currentMessage).fadeIn(500);
+        $("#message").text(currentMessage);
+        fadeInElement("#message", 1000);
         shortTimer = true;
         resetTimer();
     }
