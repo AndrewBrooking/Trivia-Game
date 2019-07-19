@@ -5,12 +5,16 @@ $(document).ready(function () {
     let time = 30;
     let score = 0;
     let currentMessage = "";
+    let shortTimer = false;
     let timerID;
 
+    // Initial display of question
     displayQuestion();
 
     // Handle button clicks
-    $(".choice").on("click", ".btn", nextQuestion);
+    $(".choice").on("click", ".btn", function() {
+        nextQuestion($(this).attr("value"));
+    });
 
     // Displays the current question and possible answers
     function displayQuestion() {
@@ -51,10 +55,12 @@ $(document).ready(function () {
     }
 
     // Checks if correct answer was selected then displays the next question
-    function nextQuestion() {
-        if ($(this).attr("value") === queries[questionID].answer) {
+    function nextQuestion(value) {
+        if (value === queries[questionID].answer) {
             score++;
             currentMessage = "Correct!";
+        } else if (value === "timeout") {
+            currentMessage = "Time expired!"
         } else {
             currentMessage = "Incorrect!";
         }
@@ -63,30 +69,33 @@ $(document).ready(function () {
         setTimeout(displayMessage, 500);
         setTimeout(emptyChoices, 500);
 
+        setTimeout(function() {
+            $("#message").fadeOut(500);
+            $("#message").text("");
+        }, 5000);
+
         questionID++;
 
-        setTimeout(displayQuestion, 5000);
+        if (questionID >= queries.length) {
+            stopTimer();
+            $("#timer-container").css({ opacity: 0 });
+            displayMessage(score + "/" + queries.length);
+        } else {
+            setTimeout(displayQuestion, 5000);
+        }
     }
 
+    // Changes the displayed time on the screen
     function writeTime() {
         $("#timer").text(time);
     }
 
-    // Sets timer back to 30 seconds
+    // Sets timer back to 30 or 5 seconds
     function resetTimer() {
         stopTimer();
-        time = 30;
+        time = shortTimer ? 5: maxTime;
         writeTime();
-        $('.circle_animation').css('stroke-dashoffset', initialOffset - (time * (initialOffset / maxTime)));
-        timerID = setInterval(updateTimer, 1000);
-    }
-
-    // Sets timer to 5 seconds
-    function shortResetTimer() {
-        stopTimer();
-        time = 5;
-        writeTime();
-        $('.circle_animation').css('stroke-dashoffset', initialOffset - (time * (initialOffset / maxTime)));
+        updateCircle();
         timerID = setInterval(updateTimer, 1000);
     }
 
@@ -95,31 +104,39 @@ $(document).ready(function () {
         clearInterval(timerID);
     }
 
+    // Main update function for the timer
     function updateTimer() {
         writeTime();
+        updateCircle();
 
-        // Animate timer bar decreasing
-        $('.circle_animation').css('stroke-dashoffset', initialOffset - (time * (initialOffset / maxTime)));
+        time--;
 
         if (time <= 0) {
             stopTimer();
-        }
 
-        time--;
+            if (!shortTimer) {
+                nextQuestion("timeout");
+            }
+
+            shortTimer = false;
+        }
     }
 
+    // Animate timer bar decreasing
+    function updateCircle() {
+        $('.circle_animation').css('stroke-dashoffset', initialOffset - (time * (initialOffset / maxTime)));
+    }
+
+    // Clear choices div
     function emptyChoices() {
         $(".choice").empty();
     }
 
+    // Shows correct/incorrect message
     function displayMessage() {
-        $("#score-message").text(currentMessage).fadeIn(500);
-        shortResetTimer();
-
-        setTimeout(function() {
-            $("#score-message").fadeOut(500);
-            $("#score-message").empty();
-        }, 5000);
+        $("#message").text(currentMessage).fadeIn(500);
+        shortTimer = true;
+        resetTimer();
     }
 
     // Implementation of the Fisher-Yates shuffling algorithim
